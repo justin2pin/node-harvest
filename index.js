@@ -14,11 +14,12 @@ module.exports = Harvest = function (opts) {
 
     this.use_oauth = (opts.identifier !== undefined &&
                       opts.secret !== undefined);
+    this.use_oauth2 = (opts.accessToken !== undefined);
     this.use_basic_auth = (opts.email !== undefined &&
                            opts.password !== undefined);
 
-    if (!this.use_oauth && !this.use_basic_auth) {
-        throw new Error('The Harvest API client requires credentials for basic authentication or an identifier and secret for OAuth');
+    if (!this.use_oauth && !this.use_basic_auth && !this.use_oauth2) {
+        throw new Error('The Harvest API client requires credentials for basic authentication, an identifier and secret for OAuth or an access token for OAuth2');
     }
 
     this.subdomain = opts.subdomain;
@@ -38,6 +39,9 @@ module.exports = Harvest = function (opts) {
         baseURL: self.host
     }, {
         run: function (type, url, data) {
+            if (this.use_oauth2) {
+                url = url + '?access_token' = opts.accessToken;
+            }
             if (self.debug) {
                 console.log('run', type, url, data);
             }
