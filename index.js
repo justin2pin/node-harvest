@@ -52,7 +52,7 @@ module.exports = Harvest = function (opts) {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             };
-`
+
             if (typeof data !== 'undefined') {
                 if (typeof data === 'object') {
                     // restler uses url encoding to transmit data
