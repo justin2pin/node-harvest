@@ -28,6 +28,7 @@ module.exports = Harvest = function (opts) {
     this.password = opts.password;
     this.identifier = opts.identifier;
     this.secret = opts.secret;
+    this.accessToken = opts.accessToken;
     this.user_agent = opts.user_agent;
     this.debug = opts.debug || false;
     this.throttle_concurrency = opts.throttle_concurrency || null;
@@ -39,8 +40,8 @@ module.exports = Harvest = function (opts) {
         baseURL: self.host
     }, {
         run: function (type, url, data) {
-            if (this.use_oauth2) {
-                url = url + '?access_token' = opts.accessToken;
+            if (self.use_oauth2) {
+                url += '?access_token=' + self.accessToken;
             }
             if (self.debug) {
                 console.log('run', type, url, data);
@@ -51,7 +52,7 @@ module.exports = Harvest = function (opts) {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             };
-
+`
             if (typeof data !== 'undefined') {
                 if (typeof data === 'object') {
                     // restler uses url encoding to transmit data
